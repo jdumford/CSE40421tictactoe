@@ -1,3 +1,5 @@
+#! usr/bin/python
+
 import sys
 class Game_Board:
 	"""Tic Tac Toe board"""

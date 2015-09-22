@@ -35,3 +35,19 @@ def score(board, symbol, opponent)
         return 0
     end
 end
+
+def minimax(board, turn, player):
+	return score(board) if score(board) != 0
+	moves = available_moves(board)
+	if player == 1:
+		for move in moves:
+			newboard = board
+			newboard.mark_board(move, "X")
+			minimax(newboard, turn, 2)
+	else:
+		for move in moves:
+			newboard = board
+			newboard.mark_board(move, "O")
+			minimax(newboard, turn, 1)
+
+			
