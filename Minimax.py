@@ -26,15 +26,13 @@ def get_new_state(board, move, symbol):
 	new_state[move]=symbol
 	return new_state
 		
-def score(board, symbol, opponent)
+def score(board, symbol, opponent):
     if win(board, symbol)
         return 10
     elsif win(board, opponent)
         return -10
     else
         return 0
-    end
-end
 def is_full(board):
 		for e in board:
 			if e == ".":
