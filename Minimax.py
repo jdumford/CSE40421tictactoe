@@ -55,16 +55,24 @@ def Min_value(board)
 	for move in moves:
 		v=min(v,Max_value(generate_new_state(board, move, symbol))
 	return v
-def minimax(board, turn, player):
-        return score(board) if win(board,symbol) or is_full(board)
+def minimax(board,player):
+	action=-1
+        return [score(board),action] if win(board,symbol) or is_full(board)
         moves = available_moves(board)
         if player == 1:
+        	v=-100000
                 for move in moves:
-                        newboard = board
-                        newboard.mark_board(move, "X")
-                        minimax(newboard, turn, 2)
+                        newboard=generate_new_state(board,move,"X")
+                        new_score=minimax(newboard, 2)
+                        if (new_score>v):
+                        	action=move
+                        	v=new_score
         else:
+        	v=1000000
                 for move in moves:
-                        newboard = board
-                        newboard.mark_board(move, "O")
-                        minimax(newboard, turn, 1)
+                        newboard=generate_new_state(board,move,"O")
+                        new_score=minimax(newboard, 1)
+                        if (new_score<v):
+                        	action=move
+                        	v=new_score
+        return [v,action]
