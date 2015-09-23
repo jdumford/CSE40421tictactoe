@@ -44,15 +44,17 @@ def Max_value(board)
 	v=-100000
 	moves=available_moves(game_board)
 	symbol='X'
-	for move in moves
+	for move in moves:
 		v=max(v,Min_value(generate_new_state(board, move, symbol))
+	return v
 def Min_value(board)
 	return score(board) if win(board,symbol) or is_full(board)
 	v=100000
 	moves=available_moves(game_board)
 	symbol='O'
-	for move in moves
+	for move in moves:
 		v=min(v,Max_value(generate_new_state(board, move, symbol))
+	return v
 def minimax(board, turn, player):
         return score(board) if win(board,symbol) or is_full(board)
         moves = available_moves(board)
