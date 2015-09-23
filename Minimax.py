@@ -14,7 +14,7 @@ def win(board, symbol):
 		if(i==2):
 			if self.board[i]==self.board[i+2]==self.board[i+4] and self.board[i]==symbol:
 					return True
-		return False
+	return False
 def available_moves(game_board):
 	moves=([])
 	for i in range(len(game_board.board)):
@@ -42,7 +42,7 @@ def is_full(board):
 def Max_value(board)
 	return score(board) if win(board,symbol) or is_full(board)
 	v=-100000
-	moves=available_moves(game_board)
+	moves=available_moves(board)
 	symbol='X'
 	for move in moves:
 		v=max(v,Min_value(generate_new_state(board, move, symbol))
@@ -50,7 +50,7 @@ def Max_value(board)
 def Min_value(board)
 	return score(board) if win(board,symbol) or is_full(board)
 	v=100000
-	moves=available_moves(game_board)
+	moves=available_moves(board)
 	symbol='O'
 	for move in moves:
 		v=min(v,Max_value(generate_new_state(board, move, symbol))
