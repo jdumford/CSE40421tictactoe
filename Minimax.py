@@ -27,18 +27,32 @@ def get_new_state(board, move, symbol):
 	return new_state
 		
 def score(board, symbol, opponent):
-    if win(board, symbol)
+    if win(board, symbol):
         return 10
-    elsif win(board, opponent)
+    elsif win(board, opponent):
         return -10
     else
         return 0
+    
 def is_full(board):
 		for e in board:
 			if e == ".":
 				return False
 		return True
-
+def Max_value(board)
+	return score(board) if win(board,symbol) or is_full(board)
+	v=-100000
+	moves=available_moves(game_board)
+	symbol='X'
+	for move in moves
+		v=max(v,Min_value(generate_new_state(board, move, symbol))
+def Min_value(board)
+	return score(board) if win(board,symbol) or is_full(board)
+	v=100000
+	moves=available_moves(game_board)
+	symbol='O'
+	for move in moves
+		v=min(v,Max_value(generate_new_state(board, move, symbol))
 def minimax(board, turn, player):
         return score(board) if win(board,symbol) or is_full(board)
         moves = available_moves(board)
