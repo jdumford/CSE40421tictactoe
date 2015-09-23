@@ -35,9 +35,14 @@ def score(board, symbol, opponent)
         return 0
     end
 end
+def is_full(board):
+		for e in board:
+			if e == ".":
+				return False
+		return True
 
 def minimax(board, turn, player):
-        return score(board) if score(board) != 0
+        return score(board) if win(board,symbol) or is_full(board)
         moves = available_moves(board)
         if player == 1:
                 for move in moves:
