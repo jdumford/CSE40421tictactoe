@@ -94,7 +94,7 @@ def minimax(state,player,symbol):
 	successors=state.successors(symbol)
 	action=state.action
 	if terminal_test(state.board, symbol):
-            return [score(state.board, symbol),action]
+            return score(state.board, symbol),action
         if player == 1:
         	v=-100000
                 for i in successors:

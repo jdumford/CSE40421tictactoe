@@ -61,10 +61,10 @@ class Game_Board:
 					return True
 		return False
 		
-
 num_players= int(input('Enter the number of AI players: '))
 x = Game_Board()
 x.display_board
+state=Minimax.State(x.board, 0)
 if num_players==1:
 	while True:
 		if x.is_empty():
@@ -72,12 +72,13 @@ if num_players==1:
 		if player==1:
 			place = int(input("What spot would you like to mark: "))
 		elif player==2:
-			place=Minimax.minimax(x.board, 2, 'X')[1] 
+			place=Minimax.minimax(state, 1, 'X')[1] 
 		if x.mark_board(place, player)==False:
 			print "Invalid move, Choose again"
 		
 		else:
 			print "Player %d has marked %d: " % (player, place)
+			state.board=x.board
 		if x.check_win():
 			if player==1:
 				x.display_board()
@@ -101,9 +102,9 @@ else:
 		if x.is_empty():
 			player = 1
 		if player==1:
-			place = Minimax.minimax(x.board, 2,'O')[1]
+			place = Minimax.minimax(state, 1,'O')[1]
 		elif player==2:
-			place=Minimax.minimax(x.board, 1, 'X')[1] 
+			place=Minimax.minimax(state, 1, 'X')[1] 
 		if x.mark_board(place, player)==False:
 			print "Invalid move, Choose again"
 		
