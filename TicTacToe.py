@@ -15,7 +15,7 @@ class Game_Board:
 		if place>9 or place<1:
 			return False
 		else:
-			if player==1 :
+			if player==2 :
 				if self.empty_cell(place-1):
 					self.board[place-1]="X"
 					self.p1.append(place)
@@ -72,7 +72,7 @@ if num_players==1:
 		if player==1:
 			place = int(input("What spot would you like to mark: "))
 		elif player==2:
-			place=minimax(x.board, 1, 'X')[1] 
+			place=Minimax.minimax(x.board, 2, 'X')[1] 
 		if x.mark_board(place, player)==False:
 			print "Invalid move, Choose again"
 		
@@ -101,9 +101,9 @@ else:
 		if x.is_empty():
 			player = 1
 		if player==1:
-			place = minimax(x.board, 2,'O')[1]
+			place = Minimax.minimax(x.board, 2,'O')[1]
 		elif player==2:
-			place=minimax(x.board, 1, 'X')[1] 
+			place=Minimax.minimax(x.board, 1, 'X')[1] 
 		if x.mark_board(place, player)==False:
 			print "Invalid move, Choose again"
 		
