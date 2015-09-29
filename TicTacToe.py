@@ -1,4 +1,5 @@
 import sys
+import Minimax
 class Game_Board:
 	"""Tic Tac Toe board"""
 	def __init__(self):
@@ -71,7 +72,7 @@ if num_players==1:
 		if player==1:
 			place = int(input("What spot would you like to mark: "))
 		elif player==2:
-			place=minimax(x.board, 1)[1] 
+			place=minimax(x.board, 1, 'X')[1] 
 		if x.mark_board(place, player)==False:
 			print "Invalid move, Choose again"
 		
@@ -100,9 +101,9 @@ else:
 		if x.is_empty():
 			player = 1
 		if player==1:
-			place = minimax(x.board, 2)[1]
+			place = minimax(x.board, 2,'O')[1]
 		elif player==2:
-			place=minimax(x.board, 1)[1] 
+			place=minimax(x.board, 1, 'X')[1] 
 		if x.mark_board(place, player)==False:
 			print "Invalid move, Choose again"
 		

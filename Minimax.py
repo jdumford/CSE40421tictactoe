@@ -29,9 +29,9 @@ def get_new_state(board, move, symbol):
 def score(board, symbol, opponent):
     if win(board, symbol):
         return 10
-    elsif win(board, opponent):
+    elif win(board, opponent):
         return -10
-    else
+    else:
         return 0
     
 def is_full(board):
@@ -39,25 +39,10 @@ def is_full(board):
 			if e == ".":
 				return False
 		return True
-def Max_value(board)
-	return score(board) if win(board,symbol) or is_full(board)
-	v=-100000
-	moves=available_moves(board)
-	symbol='X'
-	for move in moves:
-		v=max(v,Min_value(generate_new_state(board, move, symbol))
-	return v
-def Min_value(board)
-	return score(board) if win(board,symbol) or is_full(board)
-	v=100000
-	moves=available_moves(board)
-	symbol='O'
-	for move in moves:
-		v=min(v,Max_value(generate_new_state(board, move, symbol))
-	return v
-def minimax(board,player):
+def minimax(board,player,symbol):
 	action=-1
-        return [score(board),action] if win(board,symbol) or is_full(board)
+        if win(board,symbol) or is_full(board):
+		return [score(board,symbol),action]
         moves = available_moves(board)
         if player == 1:
         	v=-100000
