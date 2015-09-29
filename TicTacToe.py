@@ -72,26 +72,29 @@ if num_players==1:
 		if player==1:
 			place = int(input("What spot would you like to mark: "))
 		elif player==2:
-			place=Minimax.minimax(state, 1, 'X')[1] 
+			result=Minimax.minimax(state, 2, 'X')
+			place=result[1]
+			print place
 		if x.mark_board(place, player)==False:
 			print "Invalid move, Choose again"
 		
 		else:
 			print "Player %d has marked %d: " % (player, place)
-			state.board=x.board
-		if x.check_win():
+			state=Minimax.State(x.board, place)
+			if x.check_win():
+				if player==1:
+					x.display_board()
+					print "Player 1 wins!"
+					sys.exit()
+				else:
+					x.display_board()
+					print "Player 2 wins!"
+					sys.exit()
 			if player==1:
-				x.display_board()
-				print "Player 1 wins!"
-				sys.exit()
+				player=2
 			else:
-				x.display_board()
-				print "Player 2 wins!"
-				sys.exit()
-		if player==1:
-			player=2
-		else:
-			player=1
+				player=1
+		
 		x.display_board()
 		if x.is_full():
 			print "The game is a draw"

@@ -12,18 +12,18 @@ class State(object):
 def win(board, symbol):
 	for i in range(3):
 		#Check vertical
-		if board[i]==board[i+3]==board[i+6] and board[i]==symbol:
+		if (board[i]==board[i+3]==board[i+6]) and board[i]==symbol:
 			return True
 		#Check horizontal
-		if board[i*3]==board[(i*3)+1]==board[(i*3)+2] and board[i*3]==symbol:
+		if (board[i*3]==board[(i*3)+1]==board[(i*3)+2]) and board[i*3]==symbol:
 			return True
 		#Check Diagonal
 		if(i==0):
-			if board[i]==board[i+4]==board[i+8] and board[i]==symbol:
+			if (board[i]==board[i+4]==board[i+8]) and board[i]==symbol:
 					return True
 			#Check Diagonal
 		if(i==2):
-			if board[i]==board[i+2]==board[i+4] and board[i]==symbol:
+			if (board[i]==board[i+2]==board[i+4]) and board[i]==symbol:
 					return True
 	return False
 def available_moves(game_board):
@@ -42,12 +42,8 @@ def get_new_state(board, move, symbol):
 def score(board, symbol):
     if win(board, symbol):
         return 10
-    if symbol=='X':
-    	if win(board, 'O'):
-        	return -10
-    elif symbol=='O':
-	if win(board,'X'):
-		return -10
+    if win(board, opposite(symbol)):
+	return -10
     else:
         return 0
     
@@ -74,40 +70,43 @@ def opposite(symbol):
 		return 'X'
 def max_value(state,symbol):
 	if terminal_test(state.board, symbol):
-            return score(state.board, symbol)
+            return score(state.board, symbol),state.action
         v = -100000
        	successors=state.successors(symbol)
         for i in successors:
             v = max(v, min_value(i, opposite(symbol)))
-	return v
+	return v,i.action
 def min_value(state, symbol):
 	if terminal_test(state.board, symbol):
-            return score(state.board, symbol),state
-        v = -100000
+            return score(state.board, symbol),state.action
+        v = 100000
        	successors=state.successors(symbol)
         for i in successors:
             v = min(v, max_value(i, opposite(symbol)))
-	return v,state
+	    action=i.action
+	return v,action
 
 
 def minimax(state,player,symbol):
 	successors=state.successors(symbol)
 	action=state.action
 	if terminal_test(state.board, symbol):
-            return [score(state.board, symbol),action]
+		v=score(state.board, symbol)
+		action=state.action
+		print action, v
+		return [v,action]
         if player == 1:
         	v=-100000
-                for i in successors:
-                        new_score=minimax(i, 2,opposite(symbol))[0]
-                        if new_score>v:
-                        	action=i.action
-                        	v=new_score
+                #for i in successors:
+                new_score=max_value(state	,opposite(symbol))
+                if new_score[0]>v:
+                       	action=new_score[1]
+                       	v=new_score[0]
         else:
-        	v=1000000
-                new_val=min_value(state, symbol)
-                for i in successors:
-                        new_score=minimax(i, 1,opposite(symbol))[0]
-                        if new_score<v:
-                        	action=i.action
-                        	v=new_score
+        	v=10000
+              # for i in successors:
+                new_score=min_value(state,opposite(symbol))
+                if new_score[0]<v:
+            		action=new_score[1]
+        		v=new_score[0]
         return [v,action]
