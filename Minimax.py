@@ -1,3 +1,4 @@
+from numpy import argmax
 class State(object):
 	def __init__(self, board, action):
 		self.board=board
@@ -28,21 +29,22 @@ def win(board, symbol):
 	return False
 def available_moves(game_board):
 	moves=[]
-	for i in range(len(game_board)):
+	for i in range(len(game_board.board)):
 		if game_board[i]==".":
 			moves.append(i+1)
 	return moves
-def get_new_state(board, move, symbol):
-	new_state=[]
-	for i in range(len(board)):
-		new_state.append(board[i])
-	new_state[move-1]=symbol
+def get_new_state(current, move, symbol):
+	board=[]
+	for i in range(len(current.board)):
+		board.append(current.board[i])
+	board[move-1]=symbol
+	new_state=State(board, move)
 	return new_state
 		
-def score(board, symbol):
-    if win(board, symbol):
+def score(state, symbol):
+    if win(state.board, symbol):
         return 10
-    if win(board, opposite(symbol)):
+    if win(state.board, opposite(symbol)):
 	return -10
     else:
         return 0
@@ -68,45 +70,43 @@ def opposite(symbol):
 		return 'O'
 	else:
 		return 'X'
-def max_value(state,symbol):
+def max_value(state, symbol):
 	if terminal_test(state.board, symbol):
-            return score(state.board, symbol),state.action
-        v = -100000
-       	successors=state.successors(symbol)
-        for i in successors:
-            v = max(v, min_value(i, opposite(symbol)))
-	return v,i.action
+            return score(state.board, symbol)
+        v = -10000
+        for a in available_moves(state):
+            v = max(v, min_value(get_new_state(state, a, opposite(symbol)))
+	return v
 def min_value(state, symbol):
 	if terminal_test(state.board, symbol):
-            return score(state.board, symbol),state.action
-        v = 100000
-       	successors=state.successors(symbol)
-        for i in successors:
-            v = min(v, max_value(i, opposite(symbol)))
-	    action=i.action
-	return v,action
+            return score(state.board, symbol)
+        v = 10000
+        for a in available_moves(state):
+            v = min(v, max_value(get_new_state(state, a, opposite(symbol)))
+	return v
 
 
 def minimax(state,player,symbol):
-	successors=state.successors(symbol)
-	action=state.action
-	if terminal_test(state.board, symbol):
-		v=score(state.board, symbol)
-		action=state.action
-		print action, v
-		return [v,action]
-        if player == 1:
-        	v=-100000
-                #for i in successors:
-                new_score=max_value(state	,opposite(symbol))
-                if new_score[0]>v:
-                       	action=new_score[1]
-                       	v=new_score[0]
-        else:
-        	v=10000
+	actions=available_moves(state)
+    	action, state= argmax(state.successors(symbol),
+                           lambda ((a, s)): min_value(s))
+        return action
+#	successors=state.successors(symbol)
+#	action=state.action
+#	if terminal_test(state.board, symbol):
+#		action=state.action
+#		print action, v
+#		return [v,action]
+ #       if player == 1:
+#        	v=-100000
+ #               #for i in successors:
+  #              new_score=max_value(state	,opposite(symbol))
+   #             if new_score[0]>v:
+    ##                  	v=new_score[0]
+       # else:
+      #  	v=10000
               # for i in successors:
-                new_score=min_value(state,opposite(symbol))
-                if new_score[0]<v:
-            		action=new_score[1]
-        		v=new_score[0]
-        return [v,action]
+        #        new_score=min_value(state,opposite(symbol))
+         #       if new_score[0]<v:
+          ##		v=new_score[0]
+        #return [v,action]
