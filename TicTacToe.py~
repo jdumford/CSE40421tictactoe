@@ -83,9 +83,9 @@ if num_players==1:
 			state=Minimax.State(x.board, place)
 			if x.check_win():
 				if player==1:
-				x.display_board()
-				print "Player 1 wins!"
-				sys.exit()
+					x.display_board()
+					print "Player 1 wins!"
+					sys.exit()
 				else:
 					x.display_board()
 					print "Player 2 wins!"

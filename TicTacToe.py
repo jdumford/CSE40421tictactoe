@@ -73,7 +73,7 @@ if num_players==1:
 			place = int(input("What spot would you like to mark: "))
 		elif player==2:
 			result=Minimax.minimax(state, 2, 'X')
-			place=result[1]
+			place=result
 			print place
 		if x.mark_board(place, player)==False:
 			print "Invalid move, Choose again"
