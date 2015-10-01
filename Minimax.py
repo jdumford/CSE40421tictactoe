@@ -28,6 +28,11 @@ def win(state, symbol):
             if (state.board[i]==state.board[i+2]==state.board[i+4]) and state.board[i]==symbol:
                 return True
     return False
+def is_empty(state):
+    for i in state.board:
+	if i!='.':
+            return False
+    return True
 def available_moves(state):
     moves=[]
     for i in range(len(state.board)):
@@ -65,23 +70,7 @@ def opposite(symbol):
         return 'O'
     else:
         return 'X'
-def max_value(state, symbol):
-    if terminal_test(state, symbol):
-        print state.board,score(state, symbol)
-        return score(state, symbol)
-    v = -10000
-    for a in available_moves(state):
-        v = max(v, min_value(get_new_state(state, a, symbol), opposite(symbol)))
-    return v
-def min_value(state, symbol):
-    if terminal_test(state, symbol):
-        print state.board, score(state, symbol)
-        return score(state, symbol)
-    v = 10000
-    for a in available_moves(state):
-        v = min(v, max_value(get_new_state(state, a, symbol), opposite(symbol)))
-	print a
-    return v
+
 def argmin(seq, fn):
     """Return an element with lowest fn(seq[i]) score; tie goes to first one.
     >>> argmin(['one', 'to', 'three'], len)
@@ -89,17 +78,37 @@ def argmin(seq, fn):
     """
     best = seq[0]; best_score = fn(best)
     for x in seq:
-	print x
+	#print x
         x_score = fn(x)
+	print x_score
         if x_score < best_score:
             best, best_score = x, x_score
     return best
 def argmax(seq, fn):
     return argmin(seq, lambda x: -fn(x))
 def minimax(state,player,symbol):
-    actions=state.successors(symbol)
-    for i in actions:
+    if is_empty(state):
+	return 5
+    def max_value(state):
+        if terminal_test(state, state.sym):
+            return score(state, state.sym)
+        v = -999
+        for i in state.successors(state.sym):
+            v = max(v, min_value(i[1]))
+        return v
+
+    def min_value(state):
+        if terminal_test(state, state.sym):
+            return score(state, state.sym)
+        v = 999
+        for i in state.successors(state.sym):
+            v = min(v, min_value(i[1]))
+        return v
+    for i in state.successors(state.sym):
+	#print i[1].board
+	if win(i[1], opposite(symbol)):
+	    return i[0]
         if win(i[1], (symbol)):
             return i[0]
-    action, state = argmax(state.successors(symbol),lambda ((a, s)): min_value(s, opposite(symbol)))
+    action, state = argmax(state.successors(symbol),lambda ((a, s)): min_value(s))
     return action
