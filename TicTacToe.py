@@ -82,7 +82,10 @@ if num_players==1:
 		
 		else:
 			print "Player %d has marked %d: " % (player, place)
-			state=Minimax.State(x.board, place)
+			if player==1:
+				state=Minimax.State(x.board, 'X')
+			else:
+				state=Minimax.State(x.board,'O')
 			if x.check_win():
 				if player==1:
 					x.display_board()

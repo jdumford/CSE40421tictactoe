@@ -67,19 +67,20 @@ def opposite(symbol):
         return 'X'
 def max_value(state, symbol):
     if terminal_test(state, symbol):
-        print score(state, symbol)
+        print state.board,score(state, symbol)
         return score(state, symbol)
     v = -10000
     for a in available_moves(state):
-        v = max(v, min_value(get_new_state(state, a, opposite(symbol)), symbol))
+        v = max(v, min_value(get_new_state(state, a, symbol), opposite(symbol)))
     return v
 def min_value(state, symbol):
     if terminal_test(state, symbol):
-        print score(state, symbol)
+        print state.board, score(state, symbol)
         return score(state, symbol)
     v = 10000
     for a in available_moves(state):
-        v = min(v, max_value(get_new_state(state, a, opposite(symbol)), symbol))
+        v = min(v, max_value(get_new_state(state, a, symbol), opposite(symbol)))
+	print a
     return v
 def argmin(seq, fn):
     """Return an element with lowest fn(seq[i]) score; tie goes to first one.
@@ -88,6 +89,7 @@ def argmin(seq, fn):
     """
     best = seq[0]; best_score = fn(best)
     for x in seq:
+	print x
         x_score = fn(x)
         if x_score < best_score:
             best, best_score = x, x_score
@@ -97,28 +99,7 @@ def argmax(seq, fn):
 def minimax(state,player,symbol):
     actions=state.successors(symbol)
     for i in actions:
-        if win(i[1], opposite(symbol)):
+        if win(i[1], (symbol)):
             return i[0]
-    action, state = argmax(state.successors(symbol),
-                           lambda ((a, s)): max_value(s, opposite(symbol)))
-        #action= argmax(state.successors(symbol),symbol)
+    action, state = argmax(state.successors(symbol),lambda ((a, s)): min_value(s, opposite(symbol)))
     return action
-#       successors=state.successors(symbol)
-#       action=state.action
-#       if terminal_test(state.board, symbol):
-#           action=state.action
-#           print action, v
-#           return [v,action]
- #      if player == 1:
- #          v=-100000
- #          #for i in successors:
- #              new_score=max_value(state,opposite(symbol))
-   #            if new_score[0]>v:
-    ##              v=new_score[0]
-       # else:
-       #      v=10000
-              # for i in successors:
-        #        new_score=min_value(state,opposite(symbol))
-         #       if new_score[0]<v:
-          ##v=new_score[0]
-        #return [v,action]return self.children
