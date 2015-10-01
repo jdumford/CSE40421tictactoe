@@ -5,7 +5,7 @@ class State(object):
         self.children=([])
         self.sym=symbol
         self.score=0
-    def successors(self, player):
+    def successors(self):
         moves=available_moves(self)
         for move in moves:
             new_state=get_new_state(self,move,opposite(self.sym))
@@ -93,7 +93,7 @@ def minimax(state,player,symbol):
         if terminal_test(state, state.sym):
             return score(state, state.sym)
         v = -999
-        for i in state.successors(state.sym):
+        for i in state.successors():
             v = max(v, min_value(i[1]))
         return v
 
@@ -101,14 +101,14 @@ def minimax(state,player,symbol):
         if terminal_test(state, state.sym):
             return score(state, state.sym)
         v = 999
-        for i in state.successors(state.sym):
+        for i in state.successors():
             v = min(v, min_value(i[1]))
         return v
-    for i in state.successors(state.sym):
-	#print i[1].board
+    for i in state.successors():
+	print i[1].board
 	if win(i[1], opposite(symbol)):
 	    return i[0]
         if win(i[1], (symbol)):
             return i[0]
-    action, state = argmax(state.successors(symbol),lambda ((a, s)): min_value(s))
+    action, state = argmax(state.successors(),lambda ((a, s)): min_value(s))
     return action

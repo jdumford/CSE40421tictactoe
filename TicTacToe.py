@@ -110,14 +110,25 @@ else:
 		if x.is_empty():
 			player = 1
 		if player==1:
-			place = Minimax.minimax(state, 1,'O')[1]
+			result=Minimax.minimax(state, 2, 'O')
+                        place=result
+                        print place
+
 		elif player==2:
-			place=Minimax.minimax(state, 1, 'X')[1] 
+			result=Minimax.minimax(state, 2, 'X')
+                        place=result
+                        print place
+
 		if x.mark_board(place, player)==False:
 			print "Invalid move, Choose again"
 		
 		else:
 			print "Player %d has marked %d: " % (player, place)
+			if player==1:
+                                state=Minimax.State(x.board, 'X')
+                        else:
+                                state=Minimax.State(x.board,'O')
+
 		if x.check_win():
 			if player==1:
 				x.display_board()
