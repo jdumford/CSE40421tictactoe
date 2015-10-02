@@ -144,7 +144,6 @@ def best_move(board, player):
         return available_moves[0]
 
 def get_input(board, turn):
-    print available_moves(board)
     move = input('Move #%d enter choice for player 1: ' % (turn))
     if move-1 not in available_moves(board):
         print 'Invalid move'
