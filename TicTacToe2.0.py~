@@ -93,7 +93,7 @@ def is_empty(board):
             return False
     return True
 def best_move(board, player):
-    a =0
+    a =-2
     win=0
     choices = []
     combos = [
