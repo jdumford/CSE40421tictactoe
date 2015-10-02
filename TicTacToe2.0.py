@@ -76,20 +76,29 @@ def score(board):
     elif draw(board):
         return 0
 
-def minimax(board, player):
+def minimax(board, player, alpha, beta):
     if terminal_test(board):
         return score(board)
     best = None
     for move in available_moves(board):
         new_board = mark_board(board, player, move)
-        val = minimax(new_board, opponent(player))
         if player == 'O':
-            if best is None or val > best:
-                best = val
+	    val=alpha
+            val2 = minimax(new_board, opponent(player),val,beta)
+	    if val2 > val:
+		val=val2
+            if val > beta:
+                return beta
+            return val
         else:
-            if best is None or val > best:
-                best = val
-    return best
+	    val=beta
+            val2 = minimax(new_board, opponent(player),alpha,val)
+	    if val2 < val:
+		val=val2
+            if val < alpha:
+                return alpha
+	    return val
+
 def is_empty(board):
     for i in board:
         if i!='.':
@@ -117,7 +126,7 @@ def best_move(board, player):
             if o_won(new_board):
                 return move
                 win=1
-        val = minimax(new_board, opponent(player))
+        val = minimax(new_board, opponent(player),-999,999)
         if player == 'X':
             if val > a:
                 a = val
