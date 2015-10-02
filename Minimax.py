@@ -1,4 +1,4 @@
-
+import random
 class State(object):
     def __init__(self, board, symbol):
         self.board=board
@@ -11,6 +11,10 @@ class State(object):
             new_state=get_new_state(self,move,opposite(self.sym))
             self.children.append((move, new_state))
         return self.children
+winning_combos = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]]
 def win(state, symbol):
     for i in range(3):
         #Check vertical
@@ -80,13 +84,13 @@ def argmin(seq, fn):
     for x in seq:
 	#print x
         x_score = fn(x)
-	print x_score
+	#print x_score
         if x_score < best_score:
             best, best_score = x, x_score
     return best
 def argmax(seq, fn):
     return argmin(seq, lambda x: -fn(x))
-def minimax(state,player,symbol):
+"""def minimax(state,player,symbol):
     if is_empty(state):
 	return 5
     def max_value(state):
@@ -111,4 +115,42 @@ def minimax(state,player,symbol):
         if win(i[1], (symbol)):
             return i[0]
     action, state = argmax(state.successors(),lambda ((a, s)): min_value(s))
-    return action
+    return action"""
+def minimax(board, turn, player):
+    if terminal_test(board, player):
+        return score(board, opposite(player))
+    best = None
+    for move in available_moves(board):
+        new_board = get_new_state(board, move, player)
+	#print new_board.board
+        val = minimax(new_board, 1, opposite(player))
+        if player == 'O':
+            if best is None or val > best:
+                best = val
+        else:
+            if best is None or val < best:
+                best = val
+    return best
+
+def determine(board, turn, player):
+    a = -99
+    choices = []
+    for move in available_moves(board):
+	print move
+        new_board = get_new_state(board, move, player)
+        val = minimax(new_board, 1, opposite(player))
+        if player == 'O':
+            if val > a:
+                a = val
+                choices = [move]
+            elif val == a:
+                choices.append(move)
+	else:
+	    if val < a:
+		a = val
+		choices = [move]
+	    elif val == a:
+		choices.append(move)
+    c=random.choice(choices)
+    print c
+    return c

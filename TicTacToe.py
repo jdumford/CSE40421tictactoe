@@ -115,7 +115,7 @@ else:
                         print place
 
 		elif player==2:
-			result=Minimax.minimax(state, 2, 'X')
+			result=Minimax.determine(state, 2, 'X')
                         place=result
                         print place
 
